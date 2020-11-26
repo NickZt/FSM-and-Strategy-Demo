@@ -1,92 +1,75 @@
-package ua.zt.mezon.graphomania.fsmandstrategydemo;
+package ua.zt.mezon.graphomania.fsmandstrategydemo
 
-import android.util.Log;
-
-import java.lang.ref.WeakReference;
-
-import ua.zt.mezon.graphomania.fsmandstrategydemo.stratm.IStrategyMachine;
-import ua.zt.mezon.graphomania.fsmandstrategydemo.stratm.IStrategyState;
-import ua.zt.mezon.graphomania.fsmandstrategydemo.stratm.StrategyMachineImpl;
-import ua.zt.mezon.graphomania.fsmandstrategydemo.stratm.StrategyStateImpl;
-import ua.zt.mezon.graphomania.fsmandstrategydemo.utils.fsm.FSMAction;
+import android.util.Log
+import ua.zt.mezon.graphomania.fsmandstrategydemo.utils.fsm.FSMAction
+import ua.zt.mezon.graphomania.fsmandstrategydemo.utils.stratm.IStrategyMachine
+import ua.zt.mezon.graphomania.fsmandstrategydemo.utils.stratm.IStrategyState
+import ua.zt.mezon.graphomania.fsmandstrategydemo.utils.stratm.StrategyMachineImpl
+import ua.zt.mezon.graphomania.fsmandstrategydemo.utils.stratm.StrategyStateImpl
+import java.lang.ref.WeakReference
 
 /**
  * Created by NickZT on 22.06.2019.
  */
-public class MainActivityPresenterImpl  implements MainActivityPresenter {
-    private static final String TAG = "PresenterImpl ";
-    private final WeakReference<MainActivity> mMainActivity;
-
-    public static final String START = "start";
-    public static final String STATE_3 = "state3";
-    public static final String STATE_1 = "state1";
-    public static final String STATE_2 = "state2";
-    private IStrategyMachine mStrategyMachine;
-    private IStrategyState mStartStateNormal;
-    private IStrategyState mEndStatecharging;
-    private IStrategyState mFsmStateLow;
-    private IStrategyState mFsmStateCritical;
-    private int mPercent;
-
-    public MainActivityPresenterImpl(MainActivity mainActivity) {
-        mMainActivity = new WeakReference<MainActivity>(mainActivity);
-
-
-
-
-            mStrategyMachine = new StrategyMachineImpl();
-            mStartStateNormal = new StrategyStateImpl(START);
-            mEndStatecharging = new StrategyStateImpl(STATE_3);
-            mFsmStateLow = new StrategyStateImpl(STATE_1);
-            mFsmStateCritical = new StrategyStateImpl(STATE_2);
-
-            mStartStateNormal.addAction(new FSMAction(START, this::stActionStart));
-            mEndStatecharging.addAction(new FSMAction(STATE_3, this::stActionState3));
-            mFsmStateLow.addAction(new FSMAction(STATE_1, this::stActionState1));
-            mFsmStateCritical.addAction(new FSMAction(STATE_2, this::stActionState2));
-
-            mStrategyMachine.setStartState(mStartStateNormal);
-            mStrategyMachine.setEndState(mEndStatecharging);
-            mStrategyMachine.addState(mFsmStateLow);
-            mStrategyMachine.addState(mFsmStateCritical);
-
-
-        Log.d(TAG, "FSM  MainActivityPresenterImpl"
-                    + mStrategyMachine.getCurrentState().getStateDesc());
-
-    }
-
-    private void stActionState2() {
-
-    }
-
-    private void stActionState1() {
-
-    }
-
-    private void stActionState3() {
-
-    }
-
-    private void stActionStart() {
-
-    }
-    public void doStActionByPercent(int calculateBtDevBattState) {
-        mPercent = calculateBtDevBattState;
-        if (!mStrategyMachine.getCurrentState().getStateDesc().contentEquals(START)) {
+class MainActivityPresenterImpl(mainActivity: MainActivity) : MainActivityPresenter {
+    private val mMainActivity: WeakReference<MainActivity>
+    private val mStrategyMachine: IStrategyMachine
+    private val mStartStateNormal: IStrategyState
+    private val mEndStatecharging: IStrategyState
+    private val mFsmStateLow: IStrategyState
+    private val mFsmStateCritical: IStrategyState
+    private var mPercent = 0
+    private fun stActionStart() {}
+    private fun stActionState3() {}
+    private fun stActionState1() {}
+    private fun stActionState2() {}
+    fun doStActionByPercent(calculateBtDevBattState: Int) {
+        mPercent = calculateBtDevBattState
+        if (!mStrategyMachine.currentState!!.stateDesc.contentEquals(START)) {
             if (between(mPercent, 0, 3)) {
-               mStrategyMachine.setCurrentState( STATE_1);
+                mStrategyMachine.setCurrentState(STATE_1)
                 //showBtDevBattLevelPercent(mPercent, true);
             } else if (between(mPercent, 4, 20)) {
-                mStrategyMachine.setCurrentState( STATE_2);
+                mStrategyMachine.setCurrentState(STATE_2)
             } else {
-                mStrategyMachine.setCurrentState( STATE_3);
+                mStrategyMachine.setCurrentState(STATE_3)
             }
         }
-        mStrategyMachine.getCurrentState().executeAction();
-    }
-    public  boolean between(int i, int minValueInclusive, int maxValueInclusive) {
-        return (i >= minValueInclusive && i <= maxValueInclusive);
+        mStrategyMachine.currentState!!.executeAction()
     }
 
+    fun between(i: Int, minValueInclusive: Int, maxValueInclusive: Int): Boolean {
+        return i >= minValueInclusive && i <= maxValueInclusive
+    }
+
+    companion object {
+        const val START = "start"
+        const val STATE_3 = "state3"
+        const val STATE_1 = "state1"
+        const val STATE_2 = "state2"
+        private const val TAG = "PresenterImpl "
+    }
+
+    init {
+        // todo Create persistent store
+        // them init from store or reinit obj from
+        //ideology  before push action save them to storage ( with saves context data)
+        // state order user story usid checked fulfilled submitted cancelled payed shipped
+        mMainActivity = WeakReference(mainActivity)
+        mStrategyMachine = StrategyMachineImpl()
+        mStartStateNormal = StrategyStateImpl(START)
+        mEndStatecharging = StrategyStateImpl(STATE_3)
+        mFsmStateLow = StrategyStateImpl(STATE_1)
+        mFsmStateCritical = StrategyStateImpl(STATE_2)
+        mStartStateNormal.addAction(FSMAction(START) { stActionStart() })
+        mEndStatecharging.addAction(FSMAction(STATE_3) { stActionState3() })
+        mFsmStateLow.addAction(FSMAction(STATE_1) { stActionState1() })
+        mFsmStateCritical.addAction(FSMAction(STATE_2) { stActionState2() })
+        mStrategyMachine.setStartState(mStartStateNormal)
+        mStrategyMachine.setEndState(mEndStatecharging)
+        mStrategyMachine.addState(mFsmStateLow)
+        mStrategyMachine.addState(mFsmStateCritical)
+        Log.d(TAG, "FSM  MainActivityPresenterImpl"
+                + mStrategyMachine.currentState!!.stateDesc)
+    }
 }

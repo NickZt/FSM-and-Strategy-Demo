@@ -1,65 +1,43 @@
-package ua.zt.mezon.graphomania.fsmandstrategydemo.utils.fsm;
+package ua.zt.mezon.graphomania.fsmandstrategydemo.utils.fsm
 
-import com.don11995.log.SimpleLog;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.don11995.log.SimpleLog.e
+import java.util.*
 
 /**
  * Created by NickZT on 05.06.2019.
  */
-public class FSMStateImpl implements IFSMState {
-    private HashMap<String, IFSMState> mMapping = new HashMap<>();
-    private String mStateName;
-    private FSMAction mFSMActionForStrategyMode = null;
+class FSMStateImpl(override val stateDesc: String) : IFSMState {
+    private val mMapping = HashMap<String?, IFSMState>()
+    private var mFSMActionForStrategyMode: FSMAction? = null
+    override val adjacentStates: Map<String?, IFSMState>
+        get() = mMapping
 
-    public FSMStateImpl(String stateName) {
-        mStateName = stateName;
+    override fun addTransit(FSMAction: FSMAction, state: IFSMState) {
+        mMapping[FSMAction.toString()] = state
     }
 
-    @Override
-    public Map<String, IFSMState> getAdjacentStates() {
-        return mMapping;
-    }
-
-    @Override
-    public String getStateDesc() {
-        return mStateName;
-    }
-
-    @Override
-    public void addTransit(FSMAction FSMAction, IFSMState state) {
-        mMapping.put(FSMAction.toString(), state);
-    }
-
-    @Override
-    public void removeTransit(String targetStateDesc) {
+    override fun removeTransit(targetStateDesc: String) {
         // get action which directs to target state
-        String targetAction = null;
-        for (Map.Entry<String, IFSMState> entry : mMapping.entrySet()) {
-            IFSMState state = entry.getValue();
-            if (state.getStateDesc().equals(targetStateDesc)) {
-                targetAction = entry.getKey();
+        var targetAction: String? = null
+        for ((key, state) in mMapping) {
+            if (state.stateDesc == targetStateDesc) {
+                targetAction = key
             }
         }
-        mMapping.remove(targetAction);
+        mMapping.remove(targetAction)
     }
 
-    @Override
-    public void addActionForStrategyMode(FSMAction fsmAction) {
-        mFSMActionForStrategyMode = fsmAction;
+    override fun addActionForStrategyMode(fsmAction: FSMAction?) {
+        mFSMActionForStrategyMode = fsmAction
     }
 
-    @Override
-    public void executeActionForStrategyMode() {
-        if (mFSMActionForStrategyMode != null && mFSMActionForStrategyMode.getCallToExecuteAction() != null) {
+    override fun executeActionForStrategyMode() {
+        if (mFSMActionForStrategyMode != null && mFSMActionForStrategyMode!!.callToExecuteAction != null) {
             try {
-                mFSMActionForStrategyMode.fireAction();
-            } catch (Exception e) {
-                SimpleLog.e(e.getLocalizedMessage());
+                mFSMActionForStrategyMode!!.fireAction()
+            } catch (e: Exception) {
+                e(e.localizedMessage)
             }
         }
     }
-
-
 }

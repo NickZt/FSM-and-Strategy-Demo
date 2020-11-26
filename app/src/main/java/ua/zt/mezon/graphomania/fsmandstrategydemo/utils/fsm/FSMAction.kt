@@ -1,43 +1,35 @@
-package ua.zt.mezon.graphomania.fsmandstrategydemo.utils.fsm;
+package ua.zt.mezon.graphomania.fsmandstrategydemo.utils.fsm
 
-
-import io.reactivex.functions.Action;
+import io.reactivex.functions.Action
 
 /**
  * Created by NickZT on 05.06.2019.
  */
-public class FSMAction {
-    private String mActionName;
-    private Action mCallToExecuteAction;
+class FSMAction {
+    var actionName: String
+        private set
+    var callToExecuteAction: Action?
+        private set
 
-    public FSMAction(String actionName) {
-        mActionName = actionName;
-        mCallToExecuteAction = null;
+    constructor(actionName: String) {
+        this.actionName = actionName
+        callToExecuteAction = null
     }
 
-    public FSMAction(String actionName, Action onExecute) {
-        mActionName = actionName;
-        mCallToExecuteAction = onExecute;
+    constructor(actionName: String, onExecute: Action?) {
+        this.actionName = actionName
+        callToExecuteAction = onExecute
     }
 
-    public Action getCallToExecuteAction() {
-        return mCallToExecuteAction;
-    }
-
-    public String getActionName() {
-        return mActionName;
-    }
-
-    public boolean fireAction() throws Exception {
-        if (mCallToExecuteAction != null) {
-            mCallToExecuteAction.run();
+    @Throws(Exception::class)
+    fun fireAction(): Boolean {
+        if (callToExecuteAction != null) {
+            callToExecuteAction!!.run()
         }
-        return mCallToExecuteAction != null;
+        return callToExecuteAction != null
     }
 
-    @Override
-    public String toString() {
-        return mActionName;
+    override fun toString(): String {
+        return actionName
     }
-
 }
