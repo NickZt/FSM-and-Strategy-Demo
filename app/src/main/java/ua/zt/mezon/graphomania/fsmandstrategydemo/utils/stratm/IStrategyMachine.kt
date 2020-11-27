@@ -8,7 +8,7 @@ interface IStrategyMachine {
     fun setCurrentState(targetStateDesc: String): Boolean
     fun addState(newState: IStrategyState)
     fun removeState(targetStateDesc: String): Boolean
-    val currentState: IStrategyState?
+    val currentState: IStrategyState
     fun getStartState(): IStrategyState?
     fun setStartState(startState: IStrategyState)
     fun getEndState(): IStrategyState?

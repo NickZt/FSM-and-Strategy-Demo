@@ -8,7 +8,7 @@ import java.util.*
  */
 class FSMStateImpl(override val stateDesc: String) : IFSMState {
     private val mMapping = HashMap<String?, IFSMState>()
-    private var mFSMActionForStrategyMode: FSMAction? = null
+    private lateinit var mFSMActionForStrategyMode: FSMAction
     override val adjacentStates: Map<String?, IFSMState>
         get() = mMapping
 
@@ -27,7 +27,7 @@ class FSMStateImpl(override val stateDesc: String) : IFSMState {
         mMapping.remove(targetAction)
     }
 
-    override fun addActionForStrategyMode(fsmAction: FSMAction?) {
+    override fun addActionForStrategyMode(fsmAction: FSMAction) {
         mFSMActionForStrategyMode = fsmAction
     }
 

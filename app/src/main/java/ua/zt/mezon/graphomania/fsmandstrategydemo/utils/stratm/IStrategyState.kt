@@ -7,6 +7,6 @@ import ua.zt.mezon.graphomania.fsmandstrategydemo.utils.fsm.FSMAction
  */
 interface IStrategyState {
     val stateDesc: String
-    fun addAction(fsmAction: FSMAction?)
+    fun addAction(fsmAction: FSMAction)
     fun executeAction()
 }

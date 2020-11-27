@@ -9,6 +9,6 @@ interface IFSMState {
     val stateDesc: String
     fun addTransit(FSMAction: FSMAction, nextState: IFSMState)
     fun removeTransit(targetStateDesc: String)
-    fun addActionForStrategyMode(fsmAction: FSMAction?)
+    fun addActionForStrategyMode(fsmAction: FSMAction)
     fun executeActionForStrategyMode()
 }

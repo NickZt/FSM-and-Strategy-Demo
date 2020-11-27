@@ -51,6 +51,7 @@ class MainActivityPresenterImpl(mainActivity: MainActivity) : MainActivityPresen
     }
 
     init {
+        var tmplink= this::stActionStart
         // todo Create persistent store
         // them init from store or reinit obj from
         //ideology  before push action save them to storage ( with saves context data)
@@ -61,10 +62,10 @@ class MainActivityPresenterImpl(mainActivity: MainActivity) : MainActivityPresen
         mEndStatecharging = StrategyStateImpl(STATE_3)
         mFsmStateLow = StrategyStateImpl(STATE_1)
         mFsmStateCritical = StrategyStateImpl(STATE_2)
-        mStartStateNormal.addAction(FSMAction(START) { stActionStart() })
-        mEndStatecharging.addAction(FSMAction(STATE_3) { stActionState3() })
-        mFsmStateLow.addAction(FSMAction(STATE_1) { stActionState1() })
-        mFsmStateCritical.addAction(FSMAction(STATE_2) { stActionState2() })
+        mStartStateNormal.addAction(FSMAction(START)) { stActionStart() }
+        mEndStatecharging.addAction(FSMAction(STATE_3) { stActionState3() }) { stActionStart() }
+        mFsmStateLow.addAction(FSMAction(STATE_1) { stActionState1() }) { stActionStart() }
+        mFsmStateCritical.addAction(FSMAction(STATE_2) { stActionState2() }) { stActionStart() }
         mStrategyMachine.setStartState(mStartStateNormal)
         mStrategyMachine.setEndState(mEndStatecharging)
         mStrategyMachine.addState(mFsmStateLow)
@@ -72,4 +73,5 @@ class MainActivityPresenterImpl(mainActivity: MainActivity) : MainActivityPresen
         Log.d(TAG, "FSM  MainActivityPresenterImpl"
                 + mStrategyMachine.currentState!!.stateDesc)
     }
+
 }

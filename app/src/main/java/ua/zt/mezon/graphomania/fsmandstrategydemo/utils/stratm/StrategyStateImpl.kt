@@ -7,8 +7,8 @@ import ua.zt.mezon.graphomania.fsmandstrategydemo.utils.fsm.FSMAction
  * Created by NickZT on 01.02.2019.
  */
 class StrategyStateImpl(override val stateDesc: String) : IStrategyState {
-    private var mFSMActionForStrategyMode: FSMAction? = null
-    override fun addAction(fsmAction: FSMAction?) {
+    private lateinit var mFSMActionForStrategyMode: FSMAction
+    override fun addAction(fsmAction: FSMAction, function: () -> Unit) {
         mFSMActionForStrategyMode = fsmAction
     }
 

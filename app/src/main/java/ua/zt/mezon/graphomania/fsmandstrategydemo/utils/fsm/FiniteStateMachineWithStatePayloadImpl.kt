@@ -7,9 +7,9 @@ import java.util.*
  * Created by NickZT on 02.02.2019.
  */
 class FiniteStateMachineWithStatePayloadImpl<E> : IFiniteStateMachine {
-    private var mStartState: IFSMState? = null
-    private var mEndState: IFSMState? = null
-    override var currentState: IFSMState? = null
+    private lateinit var mStartState: IFSMState
+    private lateinit var mEndState: IFSMState
+    override lateinit var currentState: IFSMState
         private set
     private val mAllStates = ArrayList<IFSMState>()
     private val mMapForAllStates = HashMap<String?, ArrayList<IFSMState>?>()
