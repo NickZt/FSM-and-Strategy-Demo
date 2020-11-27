@@ -20,7 +20,6 @@ class FSMAction {
         callToExecuteAction = onExecute
     }
 
-    @Throws(Exception::class)
     fun fireAction(): Boolean {
 
             callToExecuteAction.invoke()

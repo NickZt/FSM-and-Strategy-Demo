@@ -8,17 +8,16 @@ import ua.zt.mezon.graphomania.fsmandstrategydemo.utils.fsm.FSMAction
  */
 class StrategyStateImpl(override val stateDesc: String) : IStrategyState {
     private lateinit var mFSMActionForStrategyMode: FSMAction
-    override fun addAction(fsmAction: FSMAction, function: () -> Unit) {
+
+    override fun addAction(fsmAction: FSMAction) {
         mFSMActionForStrategyMode = fsmAction
     }
 
     override fun executeAction() {
-        if (mFSMActionForStrategyMode != null && mFSMActionForStrategyMode!!.callToExecuteAction != null) {
-            try {
-                mFSMActionForStrategyMode!!.fireAction()
-            } catch (e: Exception) {
-                Log.e(TAG, e.localizedMessage)
-            }
+        try {
+            mFSMActionForStrategyMode!!.fireAction()
+        } catch (e: Exception) {
+            Log.e(TAG, e.localizedMessage)
         }
     }
 

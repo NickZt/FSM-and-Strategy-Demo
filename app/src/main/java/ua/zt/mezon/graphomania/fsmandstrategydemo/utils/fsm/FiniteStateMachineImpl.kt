@@ -102,13 +102,9 @@ class FiniteStateMachineImpl : IFiniteStateMachine {
     }
 
     override fun transit(FSMAction: FSMAction): Boolean {
-        if (currentState == null) {
-            Log.e(TAG, "FSM " + "Please setup start state")
-            return false
-        }
-        val localMapping = currentState!!.adjacentStates
-        if (localMapping!!.containsKey(FSMAction.toString())) {
-            currentState = localMapping!![FSMAction.toString()]
+        val localMapping = currentState.adjacentStates
+        if (localMapping.containsKey(FSMAction.toString())) {
+            (localMapping[FSMAction.toString()] ?: error("No action start from current state")).also { currentState = it }
         } else {
             Log.e(TAG, "FSM " + "No action start from current state")
             return false

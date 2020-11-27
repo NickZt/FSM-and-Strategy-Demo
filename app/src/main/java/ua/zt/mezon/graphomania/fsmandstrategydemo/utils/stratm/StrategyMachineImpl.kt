@@ -1,28 +1,24 @@
 package ua.zt.mezon.graphomania.fsmandstrategydemo.utils.stratm
 
 import android.util.Log
+import ua.zt.mezon.graphomania.fsmandstrategydemo.utils.fsm.IFSMState
 import java.util.*
 
 /**
  * Created by NickZT on 01.02.2019.
  */
 class StrategyMachineImpl : IStrategyMachine {
-    private var mStartState: IStrategyState? = null
-    private var mEndState: IStrategyState? = null
-    override var currentState: IStrategyState? = null
+    private lateinit var mStartState: IStrategyState
+    private lateinit var mEndState: IStrategyState
+    override lateinit var currentState: IStrategyState
         private set
     private val mAllStates = ArrayList<IStrategyState>()
     override fun setCurrentState(targetStateDesc: String): Boolean {
-        if (currentState == null) {
-            Log.e(TAG, "FSM " + "Please setup start state")
-            return false
-        } else {
-            if (!currentState!!.stateDesc.contentEquals(targetStateDesc)) {
-                for (state in mAllStates) {
-                    if (state.stateDesc == targetStateDesc) {
-                        currentState = state
-                        return true
-                    }
+        if (!currentState!!.stateDesc.contentEquals(targetStateDesc)) {
+            for (state in mAllStates) {
+                if (state.stateDesc == targetStateDesc) {
+                    currentState = state
+                    return true
                 }
             }
         }
