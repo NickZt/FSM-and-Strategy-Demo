@@ -6,26 +6,77 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import  ua.zt.mezon.graphomania.fsmandstrategydemo.ui.main.MainViewModel
+import androidx.lifecycle.Observer
+import com.don11995.log.SimpleLog
+import kotlinx.android.synthetic.main.main_fragment.*
 import ua.zt.mezon.graphomania.fsmandstrategydemo.R
+import ua.zt.mezon.graphomania.fsmandstrategydemo.datasources.ItemData
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), MainFragmentViewStatesRenderContract {
 
     companion object {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
-
+    private lateinit var viewModel: MainFragmentViewModel
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
+        viewModel = ViewModelProvider(this).get(MainFragmentViewModel::class.java)
+        viewModel.mViewState.observe(viewLifecycleOwner, Observer {
+            it?.let { render(it) }
+        })
+        viewModel.initialize(this)
+        viewModel.startLoadData()
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun showInitState() {
+        SimpleLog.d("showInitState() called")
+        greetingTextView.visibility = View.VISIBLE
+        greetingTextView.text = "Prepare to download"
+        progressBar.isIndeterminate =false
+        progressBar.visibility = View.GONE
+        errorTextView.visibility = View.GONE
+        progressBar.max = 100
+        progressBar.progress = 0
     }
+
+    override fun showLoadProgress(percent: Int) {
+        SimpleLog.d("showLoadProgress() called with: percent = $percent")
+        greetingTextView.visibility = View.GONE;
+        progressBar.progress = percent
+        progressBar.visibility = View.VISIBLE
+        errorTextView.visibility = View.GONE
+    }
+
+    override fun showError(error: String?) {
+        SimpleLog.d("showError() called with: error = $error")
+        greetingTextView.visibility = View.GONE;
+        progressBar.visibility = View.GONE
+        errorTextView.visibility = View.VISIBLE
+        errorTextView.text = error
+    }
+
+    override fun showEmptyState() {
+        SimpleLog.d("showEmptyState() called")
+        greetingTextView.visibility = View.VISIBLE
+        greetingTextView.text = "No Data"
+        progressBar.visibility = View.GONE
+        errorTextView.visibility = View.GONE
+    }
+
+    override fun showList(listItems: ArrayList<ItemData>) {
+        SimpleLog.d("showList() called with: listItems = $listItems")
+        var tmpstr = "\n"
+        for (item in listItems) {
+            tmpstr = tmpstr + item.title + "\n"
+        }
+        greetingTextView.visibility = View.VISIBLE
+        greetingTextView.text = tmpstr
+        progressBar.visibility = View.GONE
+        errorTextView.visibility = View.GONE
+
+    }
+
 
 }
