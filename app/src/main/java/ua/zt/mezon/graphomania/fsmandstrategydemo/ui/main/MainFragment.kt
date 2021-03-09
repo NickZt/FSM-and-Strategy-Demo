@@ -22,7 +22,7 @@ class MainFragment : Fragment(), MainFragmentViewStatesRenderContract {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         viewModel = ViewModelProvider(this).get(MainFragmentViewModel::class.java)
-        viewModel.mViewState.observe(viewLifecycleOwner, Observer {
+        viewModel.mViewState.observe(viewLifecycleOwner, {
             it?.let { render(it) }
         })
         viewModel.initialize(this)
@@ -30,7 +30,7 @@ class MainFragment : Fragment(), MainFragmentViewStatesRenderContract {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
-    override fun showInitState() {
+    override fun showIni() {
         SimpleLog.d("showInitState() called")
         greetingTextView.visibility = View.VISIBLE
         greetingTextView.text = "Prepare to download"
@@ -41,23 +41,23 @@ class MainFragment : Fragment(), MainFragmentViewStatesRenderContract {
         progressBar.progress = 0
     }
 
-    override fun showLoadProgress(percent: Int) {
+    override fun showLoadCounterPercentData(percent: Int) {
         SimpleLog.d("showLoadProgress() called with: percent = $percent")
-        greetingTextView.visibility = View.GONE;
+        greetingTextView.visibility = View.GONE
         progressBar.progress = percent
         progressBar.visibility = View.VISIBLE
         errorTextView.visibility = View.GONE
     }
 
-    override fun showError(error: String?) {
+    override fun showLoadError(error: String?) {
         SimpleLog.d("showError() called with: error = $error")
-        greetingTextView.visibility = View.GONE;
+        greetingTextView.visibility = View.GONE
         progressBar.visibility = View.GONE
         errorTextView.visibility = View.VISIBLE
         errorTextView.text = error
     }
 
-    override fun showEmptyState() {
+    override fun showListEmpty() {
         SimpleLog.d("showEmptyState() called")
         greetingTextView.visibility = View.VISIBLE
         greetingTextView.text = "No Data"
@@ -65,7 +65,7 @@ class MainFragment : Fragment(), MainFragmentViewStatesRenderContract {
         errorTextView.visibility = View.GONE
     }
 
-    override fun showList(listItems: ArrayList<ItemData>) {
+    override fun showListShow(listItems: ArrayList<ItemData>) {
         SimpleLog.d("showList() called with: listItems = $listItems")
         var tmpstr = "\n"
         for (item in listItems) {

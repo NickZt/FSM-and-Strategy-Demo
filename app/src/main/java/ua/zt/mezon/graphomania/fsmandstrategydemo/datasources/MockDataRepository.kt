@@ -2,9 +2,9 @@ package ua.zt.mezon.graphomania.fsmandstrategydemo.datasources
 
 import android.content.Context
 
-class MockDataModel(context: Context) : Repository {
+class MockDataRepository(context: Context) : MainFragmentRepository {
     override fun iniLoad() {
-        percent = 0;
+        percent = 0
         errorState = ""
     }
 

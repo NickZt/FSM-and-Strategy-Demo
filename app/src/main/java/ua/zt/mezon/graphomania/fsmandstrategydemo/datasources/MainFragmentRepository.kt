@@ -1,6 +1,6 @@
 package ua.zt.mezon.graphomania.fsmandstrategydemo.datasources
 
-interface Repository {
+interface MainFragmentRepository {
     fun iniLoad()
 
 }
