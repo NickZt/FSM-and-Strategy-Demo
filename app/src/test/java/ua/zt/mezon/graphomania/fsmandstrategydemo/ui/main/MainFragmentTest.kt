@@ -29,15 +29,51 @@ class MainFragmentTest : TestCase() {
         verify(contract, never()).showListShow(any())
     }
 
-    fun testRender() {}
+    @Test
+    fun testRenderLoadCounterPercentData() {
+        // Act
+        contract.render(MainFragmentUiStatesModel.LoadCounterPercentDataState(50))
+        // Assert
+        verify(contract, never()).showIni()
+        verify(contract).showLoadCounterPercentData(50)
+        verify(contract, never()).showLoadError(any())
+        verify(contract, never()).showListEmpty()
+        verify(contract, never()).showListShow(any())
+    }
 
-    fun testShowInitState() {}
+    @Test
+    fun testRenderLoadError() {
+        // Act
+        contract.render(MainFragmentUiStatesModel.LoadErrorState("Error"))
+        // Assert
+        verify(contract, never()).showIni()
+        verify(contract, never()).showLoadCounterPercentData(any())
+        verify(contract).showLoadError("Error")
+        verify(contract, never()).showListEmpty()
+        verify(contract, never()).showListShow(any())
+    }
 
-    fun testShowLoadProgress() {}
+    @Test
+    fun testRenderListEmpty() {
+        // Act
+        contract.render(MainFragmentUiStatesModel.ListEmptyState)
+        // Assert
+        verify(contract, never()).showIni()
+        verify(contract, never()).showLoadCounterPercentData(any())
+        verify(contract, never()).showLoadError(any())
+        verify(contract).showListEmpty()
+        verify(contract, never()).showListShow(any())
+    }
 
-    fun testShowError() {}
-
-    fun testShowEmptyState() {}
-
-    fun testShowList() {}
+    @Test
+    fun testRenderListShow() {
+        // Act
+        contract.render(MainFragmentUiStatesModel.ListShowState(ArrayList()))
+        // Assert
+        verify(contract, never()).showIni()
+        verify(contract, never()).showLoadCounterPercentData(any())
+        verify(contract, never()).showLoadError(any())
+        verify(contract, never()).showListEmpty()
+        verify(contract).showListShow(any())
+    }
 }
