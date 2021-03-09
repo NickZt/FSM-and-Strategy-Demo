@@ -4,6 +4,7 @@ import ua.zt.mezon.graphomania.fsmandstrategydemo.datasources.ItemData
 
 interface MainFragmentViewStatesRenderContract {
     fun render(viewState: MainFragmentUiStatesModel) {
+        showIni()
     }
 
     fun showIni()
