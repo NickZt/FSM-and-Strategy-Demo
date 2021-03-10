@@ -15,15 +15,10 @@ class FiniteStateMachineWithStatePayloadImpl<E> : IFiniteStateMachine {
     private val mMapForAllStates = HashMap<String?, ArrayList<IFSMState>?>()
     private val mPayload: E? = null
     override fun setStrategy(targetStateDesc: String): Boolean {
-        if (currentState == null) {
-            Log.e(TAG, " FSM " + "Please setup start state")
-            return false
-        } else {
-            for (state in mAllStates) {
-                if (state.stateDesc == targetStateDesc) {
-                    currentState = state
-                    return true
-                }
+        for (state in mAllStates) {
+            if (state.stateDesc == targetStateDesc) {
+                currentState = state
+                return true
             }
         }
         Log.e(TAG, "FSM " + "No such strategy in current fsm states")
@@ -102,10 +97,10 @@ class FiniteStateMachineWithStatePayloadImpl<E> : IFiniteStateMachine {
         mMapForAllStates[endState.stateDesc] = ArrayList()
     }
 
-    override fun transit(FSMAction: FSMAction): Boolean {
+    override fun transit(fsmAction: FSMAction): Boolean {
         val localMapping = currentState.adjacentStates
-        if (localMapping.containsKey(FSMAction.toString())) {
-            (localMapping[FSMAction.toString()] ?: error("No action start from current state")).also { currentState = it }
+        if (localMapping.containsKey(fsmAction.toString())) {
+            (localMapping[fsmAction.toString()] ?: error("No action start from current state")).also { currentState = it }
         } else {
             Log.e(TAG, "FSM " + "No action start from current state")
             return false

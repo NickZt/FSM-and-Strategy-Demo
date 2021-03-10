@@ -25,7 +25,7 @@ class MainActivityPresenterImpl(mainActivity: MainActivity) : MainActivityPresen
     private fun stActionState2() {}
     fun doStActionByPercent(calculateBtDevBattState: Int) {
         mPercent = calculateBtDevBattState
-        if (!mStrategyMachine.currentState!!.stateDesc.contentEquals(START)) {
+        if (!mStrategyMachine.currentState.stateDesc.contentEquals(START)) {
             if (between(mPercent, 0, 3)) {
                 mStrategyMachine.setCurrentState(STATE_1)
                 //showBtDevBattLevelPercent(mPercent, true);
@@ -35,7 +35,7 @@ class MainActivityPresenterImpl(mainActivity: MainActivity) : MainActivityPresen
                 mStrategyMachine.setCurrentState(STATE_3)
             }
         }
-        mStrategyMachine.currentState!!.executeAction()
+        mStrategyMachine.currentState.executeAction()
     }
 
     fun between(i: Int, minValueInclusive: Int, maxValueInclusive: Int): Boolean {
@@ -71,7 +71,7 @@ class MainActivityPresenterImpl(mainActivity: MainActivity) : MainActivityPresen
         mStrategyMachine.addState(mFsmStateLow)
         mStrategyMachine.addState(mFsmStateCritical)
         Log.d(TAG, "FSM  MainActivityPresenterImpl"
-                + mStrategyMachine.currentState!!.stateDesc)
+                + mStrategyMachine.currentState.stateDesc)
     }
 
 }

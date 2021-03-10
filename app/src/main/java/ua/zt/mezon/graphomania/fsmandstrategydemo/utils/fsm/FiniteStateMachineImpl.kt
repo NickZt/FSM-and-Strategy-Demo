@@ -14,15 +14,10 @@ class FiniteStateMachineImpl : IFiniteStateMachine {
     private val mAllStates = ArrayList<IFSMState>()
     private val mMapForAllStates = HashMap<String?, ArrayList<IFSMState>?>()
     override fun setStrategy(targetStateDesc: String): Boolean {
-        if (currentState == null) {
-            Log.e(TAG, "FSM " + "Please setup start state")
-            return false
-        } else {
-            for (state in mAllStates) {
-                if (state.stateDesc == targetStateDesc) {
-                    currentState = state
-                    return true
-                }
+        for (state in mAllStates) {
+            if (state.stateDesc == targetStateDesc) {
+                currentState = state
+                return true
             }
         }
         Log.e(TAG, "FSM " + "No such strategy in current fsm states")

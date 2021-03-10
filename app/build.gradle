@@ -7,6 +7,7 @@ android {
     defaultConfig {
         applicationId "ua.zt.mezon.graphomania.fsmandstrategydemo"
         minSdkVersion 19
+        multiDexEnabled true
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -18,6 +19,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        viewBinding true
+    }
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
@@ -26,7 +30,7 @@ android {
         jvmTarget = '1.8'
     }
 }
-
+def arrow_version = "0.11.0"
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -38,8 +42,12 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
     implementation "androidx.fragment:fragment-ktx:1.3.0"
-    annotationProcessor 'com.don11995.log:simple-log-processor:1.4.1'
+    kapt 'com.don11995.log:simple-log-processor:1.4.1'
     implementation 'com.don11995.log:simple-log:1.4.1'
+
+    implementation "io.arrow-kt:arrow-core:$arrow_version"
+    implementation "io.arrow-kt:arrow-syntax:$arrow_version"
+    kapt "io.arrow-kt:arrow-meta:$arrow_version"
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"

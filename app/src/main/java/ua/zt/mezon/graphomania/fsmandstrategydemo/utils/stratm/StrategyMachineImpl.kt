@@ -14,7 +14,7 @@ class StrategyMachineImpl : IStrategyMachine {
         private set
     private val mAllStates = ArrayList<IStrategyState>()
     override fun setCurrentState(targetStateDesc: String): Boolean {
-        if (!currentState!!.stateDesc.contentEquals(targetStateDesc)) {
+        if (!currentState.stateDesc.contentEquals(targetStateDesc)) {
             for (state in mAllStates) {
                 if (state.stateDesc == targetStateDesc) {
                     currentState = state

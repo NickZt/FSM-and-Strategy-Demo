@@ -32,12 +32,10 @@ class FSMStateImpl(override val stateDesc: String) : IFSMState {
     }
 
     override fun executeActionForStrategyMode() {
-        if (mFSMActionForStrategyMode != null && mFSMActionForStrategyMode!!.callToExecuteAction != null) {
-            try {
-                mFSMActionForStrategyMode!!.fireAction()
-            } catch (e: Exception) {
-                e(e.localizedMessage)
-            }
+        try {
+            mFSMActionForStrategyMode.fireAction()
+        } catch (e: Exception) {
+            e(e.localizedMessage)
         }
     }
 }

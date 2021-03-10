@@ -26,7 +26,7 @@ class MainFragment : Fragment(), MainFragmentViewStatesRenderContract {
             it?.let { render(it) }
         })
         viewModel.initialize(this)
-        viewModel.startLoadData()
+
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 

@@ -4,7 +4,23 @@ import ua.zt.mezon.graphomania.fsmandstrategydemo.datasources.ItemData
 
 interface MainFragmentViewStatesRenderContract {
     fun render(viewState: MainFragmentUiStatesModel) {
-        showIni()
+        when (viewState) {
+            is MainFragmentUiStatesModel.IniState -> {
+                showIni()
+            }
+            is MainFragmentUiStatesModel.LoadCounterPercentDataState -> {
+                showLoadCounterPercentData(viewState.percent)
+            }
+            is MainFragmentUiStatesModel.LoadErrorState -> {
+                showLoadError(viewState.errorCode)
+            }
+            is MainFragmentUiStatesModel.ListEmptyState -> {
+                showListEmpty()
+            }
+            is MainFragmentUiStatesModel.ListShowState -> {
+                showListShow(viewState.listItem)
+            }
+        }
     }
 
     fun showIni()
