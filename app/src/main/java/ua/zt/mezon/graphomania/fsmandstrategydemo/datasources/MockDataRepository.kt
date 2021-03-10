@@ -27,9 +27,7 @@ class MockDataRepository(context: Context) : MainFragmentRepository {
         delay()
 
         if (Random.nextBoolean()) {
-//            emit(
-            Either.Left("The hurricane cut the connection")
-//            )
+            emit(Either.Left("The hurricane cut the connection"))
             return@flow
         }
 
